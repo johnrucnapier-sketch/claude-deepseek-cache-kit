@@ -6,6 +6,8 @@ Diagnose unstable prompt prefixes in a Claude → gateway → DeepSeek workflow 
 
 A private incident report dated 2026-10-06 recorded **4.6% → 92.7%** input-token cache hits after normalizing volatile system metadata. This is a historical observation, not a benchmark of this public implementation. Private traffic is not published. The affected setup was Claude Desktop's third-party Code environment; the finding does not establish a universal Claude Code CLI defect.
 
+**The fix addresses client-induced prefix churn in the affected setup; roughly 92% is not a ceiling.** The project owner clarified that validation used short-context, short-request, simple tasks with a smaller reusable-history share. Actual hit rates depend on the user’s requests and workload. Long-context, multi-turn tasks that repeatedly reuse a large stable prefix with relatively little new input can achieve substantially higher rates than this validation run. No new measurement for those workloads is claimed here.
+
 The method: compare controlled direct/gateway requests, fingerprint system/tools/messages, locate the first changing prefix component, normalize only reviewed metadata, then verify provider usage and application behavior separately. [Case study and evidence limits](docs/CASE_STUDY.zh-CN.md).
 
 ```sh
